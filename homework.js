@@ -172,6 +172,29 @@ function isProductInCart(carts, productId) {
  */
 function addToCart(carts, product, quantity) {
   // 請實作此函式
+  const findProductIndex = carts.findIndex(
+    (cart) => cart.product.id === product.id
+  );
+
+  if (findProductIndex !== -1) {
+    return carts.map((cart, index) =>
+      index === findProductIndex
+        ? {
+            ...cart,
+            quantity: cart.quantity + quantity,
+          }
+        : cart
+    );
+  }
+
+  return [
+    ...carts,
+    {
+      id: `cart-${carts.length}`, //實務上可能會重複
+      product,
+      quantity,
+    },
+  ];
 }
 
 /**
@@ -183,6 +206,16 @@ function addToCart(carts, product, quantity) {
  */
 function updateCartItemQuantity(carts, cartId, newQuantity) {
   // 請實作此函式
+    return newQuantity <= 0
+    ? carts.filter((cart) => cart.id !== cartId)
+    : carts.map((cart) =>
+        cart.id === cartId
+          ? {
+              ...cart,
+              quantity: newQuantity,
+            }
+          : cart
+      );
 }
 
 /**
@@ -193,6 +226,7 @@ function updateCartItemQuantity(carts, cartId, newQuantity) {
  */
 function removeFromCart(carts, cartId) {
   // 請實作此函式
+  return carts.filter((cart) => cart.id !== cartId);
 }
 
 /**
@@ -201,6 +235,7 @@ function removeFromCart(carts, cartId) {
  */
 function clearCart() {
   // 請實作此函式
+  return [];
 }
 
 // ========================================
